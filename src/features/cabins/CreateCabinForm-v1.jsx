@@ -2,38 +2,29 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-import { createEditCabin } from "../../services/apiCabins";
+import { createCabin } from "../../services/apiCabins";
 
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Form from "../../ui/Form";
 import Input from "../../ui/Input";
 import Textarea from "../../ui/Textarea";
-import FormRow from "./../../ui/FormRow";
+import FormRow from "../../ui/FormRow";
 
-export default function CreateCabinForm({ cabinToEdit = {}, setShowForm }) {
-	const { id: editId, ...editValues } = cabinToEdit;
-	const isEditSession = editId !== undefined;
-
+export default function CreateCabinForm() {
 	const {
 		register,
 		handleSubmit,
 		reset,
 		getValues,
 		formState: { errors },
-	} = useForm({
-		defaultValues: isEditSession ? editValues : {},
-	});
+	} = useForm();
 	const queryClient = useQueryClient();
 
-	const { mutate, isLoading: isCreating } = useMutation({
-		mutationFn: data => createEditCabin(data, editId),
+	const { mutate: mutateCreateCabin, isLoading: isCreating } = useMutation({
+		mutationFn: createCabin,
 		onSuccess: () => {
-			toast.success(
-				isEditSession
-					? "Cabin successfully updated"
-					: "New cabin successfully created"
-			);
+			toast.success("New cabin successfully created");
 			queryClient.invalidateQueries({ queryKey: ["cabins"] });
 			reset();
 		},
@@ -43,14 +34,7 @@ export default function CreateCabinForm({ cabinToEdit = {}, setShowForm }) {
 	});
 
 	function onSubmit(data) {
-		let image;
-		if (typeof data.image === "string" || data.image.length === 0)
-			image = editValues.image;
-		else image = data.image[0];
-		mutate({ ...data, image });
-
-		reset();
-		if (isEditSession) setShowForm(false);
+		mutateCreateCabin({ ...data, image: data.image[0] });
 	}
 
 	return (
@@ -129,28 +113,21 @@ export default function CreateCabinForm({ cabinToEdit = {}, setShowForm }) {
 				/>
 			</FormRow>
 
-			<FormRow label="Cabin photo" error={errors?.image?.message}>
+			<FormRow label="Cabin photo">
 				<FileInput
 					id="image"
 					accept="image/*"
 					{...register("image", {
-						required: isEditSession
-							? false
-							: "This field is required",
+						required: "This field is required",
 					})}
 				/>
 			</FormRow>
 
 			<FormRow>
-				<Button
-					$variation="secondary"
-					type="reset"
-					onClick={() => setShowForm(false)}>
+				<Button $variation="secondary" type="reset">
 					Cancel
 				</Button>
-				<Button disabled={isCreating}>
-					{isEditSession ? "Edit" : "Create"} cabin
-				</Button>
+				<Button disabled={isCreating}>Add cabin</Button>
 			</FormRow>
 		</Form>
 	);
