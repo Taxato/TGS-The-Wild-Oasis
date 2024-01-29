@@ -83,7 +83,6 @@ export async function deleteCabin(id) {
 		.single();
 
 	const imageName = data.image.slice(data.image.lastIndexOf("/") + 1);
-	console.log(imageName);
 
 	if (error) {
 		console.error(error);
