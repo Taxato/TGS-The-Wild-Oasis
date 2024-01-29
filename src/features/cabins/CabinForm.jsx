@@ -7,9 +7,10 @@ import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Textarea from "../../ui/Textarea";
 
-import { useCreateEditCabin } from "./useCreateEditCabin";
+import { useCreateCabin } from "./useCreateCabin";
+import { useEditCabin } from "./useEditCabin";
 
-export default function CreateCabinForm({ cabinToEdit = {}, setShowForm }) {
+export default function CabinForm({ cabinToEdit = {}, setShowForm }) {
 	const { id: editId, ...editValues } = cabinToEdit;
 	const isEditSession = editId !== undefined;
 
@@ -23,20 +24,31 @@ export default function CreateCabinForm({ cabinToEdit = {}, setShowForm }) {
 		defaultValues: isEditSession ? editValues : {},
 	});
 
-	const { isCreateEditing, createEditCabin } =
-		useCreateEditCabin(isEditSession);
+	const { isCreating, createCabin } = useCreateCabin();
+	const { isEditing, editCabin } = useEditCabin();
+	const isWorking = isCreating || isEditing;
 
 	function onSubmit(data) {
 		let image;
 		if (typeof data.image === "string" || data.image.length === 0)
 			image = editValues.image;
 		else image = data.image[0];
-		createEditCabin(
-			{ data: { ...data, image }, editId },
-			{
-				onSuccess: () => reset(),
-			}
-		);
+
+		if (isEditSession) {
+			editCabin(
+				{ data: { ...data, image }, editId },
+				{
+					onSuccess: () => reset(),
+				}
+			);
+		} else {
+			createCabin(
+				{ ...data, image },
+				{
+					onSuccess: () => reset(),
+				}
+			);
+		}
 
 		reset();
 		if (isEditSession) setShowForm(false);
@@ -48,7 +60,7 @@ export default function CreateCabinForm({ cabinToEdit = {}, setShowForm }) {
 				<Input
 					type="text"
 					id="name"
-					disabled={isCreateEditing}
+					disabled={isWorking}
 					{...register("name", {
 						required: "This field is required",
 					})}
@@ -61,7 +73,7 @@ export default function CreateCabinForm({ cabinToEdit = {}, setShowForm }) {
 				<Input
 					type="number"
 					id="maxCapacity"
-					disabled={isCreateEditing}
+					disabled={isWorking}
 					{...register("maxCapacity", {
 						required: "This field is required",
 						min: {
@@ -78,7 +90,7 @@ export default function CreateCabinForm({ cabinToEdit = {}, setShowForm }) {
 				<Input
 					type="number"
 					id="regularPrice"
-					disabled={isCreateEditing}
+					disabled={isWorking}
 					{...register("regularPrice", {
 						required: "This field is required",
 						min: {
@@ -93,7 +105,7 @@ export default function CreateCabinForm({ cabinToEdit = {}, setShowForm }) {
 				<Input
 					type="number"
 					id="discount"
-					disabled={isCreateEditing}
+					disabled={isWorking}
 					defaultValue={0}
 					{...register("discount", {
 						required: "This field is required",
@@ -110,7 +122,7 @@ export default function CreateCabinForm({ cabinToEdit = {}, setShowForm }) {
 				<Textarea
 					type="number"
 					id="description"
-					disabled={isCreateEditing}
+					disabled={isWorking}
 					defaultValue=""
 					{...register("description", {
 						required: "This field is required",
@@ -137,7 +149,7 @@ export default function CreateCabinForm({ cabinToEdit = {}, setShowForm }) {
 					onClick={() => setShowForm(false)}>
 					Cancel
 				</Button>
-				<Button disabled={isCreateEditing}>
+				<Button disabled={isWorking}>
 					{isEditSession ? "Edit" : "Create"} cabin
 				</Button>
 			</FormRow>

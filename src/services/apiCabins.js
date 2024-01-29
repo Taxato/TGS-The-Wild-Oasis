@@ -75,19 +75,22 @@ export async function createEditCabin(newCabin, id) {
 }
 
 export async function deleteCabin(id) {
-	const { data, error } = await supabase
+	// const { data, error } = await supabase
+	const { error } = await supabase
 		.from("cabins")
 		.delete()
 		.eq("id", id)
 		.select()
 		.single();
 
-	const imageName = data.image.slice(data.image.lastIndexOf("/") + 1);
-
 	if (error) {
 		console.error(error);
 		throw new Error("Cabin could not be deleted");
 	}
+
+	/* 
+    // DELETING IMAGE
+    const imageName = data.image.slice(data.image.lastIndexOf("/") + 1);
 
 	const { error: storageError } = await supabase.storage
 		.from("cabin-images")
@@ -96,5 +99,6 @@ export async function deleteCabin(id) {
 	if (storageError) {
 		console.error(storageError);
 		throw new Error("Cabin photo could not be deleted");
-	}
+	} 
+    */
 }
