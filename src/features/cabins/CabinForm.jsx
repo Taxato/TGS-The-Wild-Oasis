@@ -8,11 +8,11 @@ import Input from "../../ui/Input";
 import Textarea from "../../ui/Textarea";
 
 import { useCreateCabin } from "./useCreateCabin";
-import { useEditCabin } from "./useEditCabin";
+import { useUpdateCabin } from "./useUpdateCabin";
 
-export default function CabinForm({ cabinToEdit = {}, setShowForm }) {
-	const { id: editId, ...editValues } = cabinToEdit;
-	const isEditSession = editId !== undefined;
+export default function CabinForm({ cabinToUpdate = {}, setShowForm }) {
+	const { id: updateId, ...updateValues } = cabinToUpdate;
+	const isUpdateSession = updateId !== undefined;
 
 	const {
 		register,
@@ -21,22 +21,22 @@ export default function CabinForm({ cabinToEdit = {}, setShowForm }) {
 		getValues,
 		formState: { errors },
 	} = useForm({
-		defaultValues: isEditSession ? editValues : {},
+		defaultValues: isUpdateSession ? updateValues : {},
 	});
 
 	const { isCreating, createCabin } = useCreateCabin();
-	const { isEditing, editCabin } = useEditCabin();
-	const isWorking = isCreating || isEditing;
+	const { isUpdating, updateCabin } = useUpdateCabin();
+	const isWorking = isCreating || isUpdating;
 
 	function onSubmit(data) {
 		let image;
 		if (typeof data.image === "string" || data.image.length === 0)
-			image = editValues.image;
+			image = updateValues.image;
 		else image = data.image[0];
 
-		if (isEditSession) {
-			editCabin(
-				{ data: { ...data, image }, editId },
+		if (isUpdateSession) {
+			updateCabin(
+				{ data: { ...data, image }, updateId },
 				{
 					onSuccess: () => reset(),
 				}
@@ -51,7 +51,7 @@ export default function CabinForm({ cabinToEdit = {}, setShowForm }) {
 		}
 
 		reset();
-		if (isEditSession) setShowForm(false);
+		if (isUpdateSession) setShowForm(false);
 	}
 
 	return (
@@ -135,7 +135,7 @@ export default function CabinForm({ cabinToEdit = {}, setShowForm }) {
 					id="image"
 					accept="image/*"
 					{...register("image", {
-						required: isEditSession
+						required: isUpdateSession
 							? false
 							: "This field is required",
 					})}
@@ -150,7 +150,7 @@ export default function CabinForm({ cabinToEdit = {}, setShowForm }) {
 					Cancel
 				</Button>
 				<Button disabled={isWorking}>
-					{isEditSession ? "Edit" : "Create"} cabin
+					{isUpdateSession ? "Update" : "Create"} cabin
 				</Button>
 			</FormRow>
 		</Form>

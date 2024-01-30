@@ -11,7 +11,9 @@ export async function getCabins() {
 	return data;
 }
 
-export async function createEditCabin(newCabin, id) {
+export async function createUpdateCabin(newCabin, id) {
+	const isUpdating = id !== undefined;
+
 	// 1. Check if new image submitted
 	const hasNewImage = typeof newCabin.image === "object";
 
@@ -25,18 +27,18 @@ export async function createEditCabin(newCabin, id) {
 		imagePath = `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
 	} else imagePath = newCabin.image;
 
-	// 2. Create/edit cabin
+	// 2. Create/update cabin
 	let query = supabase.from("cabins");
 
 	// A) CREATE
-	if (id === undefined)
+	if (!isUpdating)
 		query = await query
 			.insert({ ...newCabin, image: imagePath })
 			.select()
 			.single();
 
-	// B) EDIT
-	if (id !== undefined)
+	// B) UPDATE
+	if (isUpdating)
 		query = await query
 			.update({ ...newCabin, image: imagePath })
 			.eq("id", id)
@@ -47,7 +49,11 @@ export async function createEditCabin(newCabin, id) {
 
 	if (error) {
 		console.error(error);
-		throw new Error("Cabin could not be created");
+		throw new Error(
+			isUpdating
+				? "Cabin could not be updated"
+				: "Cabin could not be created"
+		);
 	}
 
 	// 3. Upload image IF creating new cabin OR new image is submitted

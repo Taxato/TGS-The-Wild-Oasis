@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-import { createEditCabin as createCabinApi } from "../../services/apiCabins";
+import { createUpdateCabin as createCabinApi } from "../../services/apiCabins";
 
 export function useCreateCabin() {
 	const queryClient = useQueryClient();
