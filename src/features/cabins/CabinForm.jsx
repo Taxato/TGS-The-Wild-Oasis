@@ -10,7 +10,7 @@ import Textarea from "../../ui/Textarea";
 import { useCreateCabin } from "./useCreateCabin";
 import { useUpdateCabin } from "./useUpdateCabin";
 
-export default function CabinForm({ cabinToUpdate = {}, setShowForm }) {
+export default function CabinForm({ cabinToUpdate = {}, onCloseModal }) {
 	const { id: updateId, ...updateValues } = cabinToUpdate;
 	const isUpdateSession = updateId !== undefined;
 
@@ -38,24 +38,32 @@ export default function CabinForm({ cabinToUpdate = {}, setShowForm }) {
 			updateCabin(
 				{ data: { ...data, image }, updateId },
 				{
-					onSuccess: () => reset(),
+					onSuccess: () => {
+						reset();
+						onCloseModal?.();
+					},
 				}
 			);
 		} else {
 			createCabin(
 				{ ...data, image },
 				{
-					onSuccess: () => reset(),
+					onSuccess: () => {
+						reset();
+						onCloseModal?.();
+					},
 				}
 			);
 		}
 
 		reset();
-		if (isUpdateSession) setShowForm(false);
+		// if (isUpdateSession) setShowForm(false);
 	}
 
 	return (
-		<Form onSubmit={handleSubmit(onSubmit)}>
+		<Form
+			onSubmit={handleSubmit(onSubmit)}
+			type={onCloseModal ? "modal" : "regular"}>
 			<FormRow label="Cabin Name" error={errors?.name?.message}>
 				<Input
 					type="text"
@@ -146,7 +154,7 @@ export default function CabinForm({ cabinToUpdate = {}, setShowForm }) {
 				<Button
 					$variation="secondary"
 					type="reset"
-					onClick={() => setShowForm(false)}>
+					onClick={() => onCloseModal?.()}>
 					Cancel
 				</Button>
 				<Button disabled={isWorking}>
