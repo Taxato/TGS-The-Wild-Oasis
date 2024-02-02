@@ -8,7 +8,8 @@ function Bookings() {
 			<Row>
 				<Heading as="h1">All bookings</Heading>
 			</Row>
-			<BookingTable></BookingTable>
+
+			<BookingTable />
 		</>
 	);
 }

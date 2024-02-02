@@ -4,7 +4,7 @@ import Select from "./Select";
 
 export default function SortBy({ options }) {
 	const [searchParams, setSearchParams] = useSearchParams();
-	const sortBy = searchParams.get("sortBy");
+	const sortBy = searchParams.get("sortBy") || "";
 
 	function handleChange(e) {
 		const val = e.target.value;

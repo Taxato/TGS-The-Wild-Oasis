@@ -1,10 +1,12 @@
+import { useSearchParams } from "react-router-dom";
+
 import { useCabins } from "./useCabins";
 
+import Menus from "../../ui/Menus";
+import Table from "../../ui/Table";
 import Spinner from "./../../ui/Spinner";
 import CabinRow from "./CabinRow";
-import Table from "../../ui/Table";
-import Menus from "../../ui/Menus";
-import { useSearchParams } from "react-router-dom";
+import Empty from "../../ui/Empty";
 
 export default function CabinTable() {
 	const { cabins, isLoading } = useCabins();
@@ -30,8 +32,10 @@ export default function CabinTable() {
 			break;
 	}
 
+	if (!filteredCabins.length) return <Empty resource="cabins" />;
+
 	// SORT
-	const sortBy = searchParams.get("sortBy");
+	const sortBy = searchParams.get("sortBy") || "name-asc";
 	const [field, direction] = sortBy.split("-");
 	const modifier = direction === "asc" ? 1 : -1;
 
