@@ -18,7 +18,7 @@ export default function Select({ options, value, onChange, ...props }) {
 	return (
 		<StyledSelect value={value} onChange={onChange} {...props}>
 			{options.map(option => (
-				<option key={option.val} value={option.val}>
+				<option key={option.value} value={option.value}>
 					{option.label}
 				</option>
 			))}

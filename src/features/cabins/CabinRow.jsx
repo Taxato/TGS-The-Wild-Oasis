@@ -81,46 +81,44 @@ export default function CabinRow({ cabin }) {
 				)}
 
 				<div>
-					<Menus>
-						<Menus.Menu>
-							<Modal>
-								<Menus.Toggle id={cabinId} />
+					<Menus.Menu>
+						<Modal>
+							<Menus.Toggle id={cabinId} />
 
-								<Menus.List id={cabinId}>
-									<Menus.Button
-										icon={<HiSquare2Stack />}
-										disabled={isCreating}
-										onClick={handleDuplicate}>
-										Duplicate
+							<Menus.List id={cabinId}>
+								<Menus.Button
+									icon={<HiSquare2Stack />}
+									disabled={isCreating}
+									onClick={handleDuplicate}>
+									Duplicate
+								</Menus.Button>
+
+								<Modal.Open opens="edit">
+									<Menus.Button icon={<HiPencil />}>
+										Edit
 									</Menus.Button>
+								</Modal.Open>
 
-									<Modal.Open opens="edit">
-										<Menus.Button icon={<HiPencil />}>
-											Edit
-										</Menus.Button>
-									</Modal.Open>
+								<Modal.Open opens="delete">
+									<Menus.Button icon={<HiTrash />}>
+										Delete
+									</Menus.Button>
+								</Modal.Open>
+							</Menus.List>
 
-									<Modal.Open opens="delete">
-										<Menus.Button icon={<HiTrash />}>
-											Delete
-										</Menus.Button>
-									</Modal.Open>
-								</Menus.List>
+							<Modal.Window name="edit">
+								<CabinForm cabinToUpdate={cabin} />
+							</Modal.Window>
 
-								<Modal.Window name="edit">
-									<CabinForm cabinToUpdate={cabin} />
-								</Modal.Window>
-
-								<Modal.Window name="delete">
-									<ConfirmDelete
-										resourceName="cabin"
-										onConfirm={() => deleteCabin(cabinId)}
-										disabled={isDeleting}
-									/>
-								</Modal.Window>
-							</Modal>
-						</Menus.Menu>
-					</Menus>
+							<Modal.Window name="delete">
+								<ConfirmDelete
+									resourceName="cabin"
+									onConfirm={() => deleteCabin(cabinId)}
+									disabled={isDeleting}
+								/>
+							</Modal.Window>
+						</Modal>
+					</Menus.Menu>
 				</div>
 			</Table.Row>
 		</>

@@ -8,30 +8,30 @@ export default function CabinTableOperations() {
 			<Filter
 				filterField="discount"
 				options={[
-					{ val: "all", label: "All" },
-					{ val: "no-discount", label: "No discount" },
-					{ val: "with-discount", label: "With discount" },
+					{ value: "all", label: "All" },
+					{ value: "no-discount", label: "No discount" },
+					{ value: "with-discount", label: "With discount" },
 				]}
 			/>
 
 			<SortBy
 				options={[
-					{ val: "name-asc", label: "Sort by name (A-Z)" },
-					{ val: "name-desc", label: "Sort by name (Z-A)" },
+					{ value: "name-asc", label: "Sort by name (A-Z)" },
+					{ value: "name-desc", label: "Sort by name (Z-A)" },
 					{
-						val: "regularPrice-asc",
+						value: "regularPrice-asc",
 						label: "Sort by price (Low-High)",
 					},
 					{
-						val: "regularPrice-desc",
+						value: "regularPrice-desc",
 						label: "Sort by price (High-Low)",
 					},
 					{
-						val: "maxCapacity-asc",
+						value: "maxCapacity-asc",
 						label: "Sort by max capacity (Low-High)",
 					},
 					{
-						val: "maxCapacity-desc",
+						value: "maxCapacity-desc",
 						label: "Sort by max capacity (High-Low)",
 					},
 				]}

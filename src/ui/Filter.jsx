@@ -37,10 +37,11 @@ const FilterButton = styled.button`
 
 export default function Filter({ filterField, options }) {
 	const [searchParams, setSearchParams] = useSearchParams();
-	const curFilter = searchParams.get(filterField) || options.at(0).val;
+	const curFilter = searchParams.get(filterField) || options.at(0).value;
 
 	function handleClick(val) {
 		searchParams.set(filterField, val);
+		if (searchParams.get("page")) searchParams.delete("page");
 		setSearchParams(searchParams);
 	}
 
@@ -48,10 +49,10 @@ export default function Filter({ filterField, options }) {
 		<StyledFilter>
 			{options.map(option => (
 				<FilterButton
-					key={option.val}
-					onClick={() => handleClick(option.val)}
-					$active={option.val === curFilter}
-					disabled={option.val === curFilter}>
+					key={option.value}
+					onClick={() => handleClick(option.value)}
+					$active={option.value === curFilter}
+					disabled={option.value === curFilter}>
 					{option.label}
 				</FilterButton>
 			))}

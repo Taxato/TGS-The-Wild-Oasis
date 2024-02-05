@@ -31,21 +31,13 @@ export async function createUpdateCabin(newCabin, id) {
 	let query = supabase.from("cabins");
 
 	// A) CREATE
-	if (!isUpdating)
-		query = await query
-			.insert({ ...newCabin, image: imagePath })
-			.select()
-			.single();
+	if (!isUpdating) query = query.insert({ ...newCabin, image: imagePath });
 
 	// B) UPDATE
 	if (isUpdating)
-		query = await query
-			.update({ ...newCabin, image: imagePath })
-			.eq("id", id)
-			.select()
-			.single();
+		query = query.update({ ...newCabin, image: imagePath }).eq("id", id);
 
-	const { data, error } = query;
+	const { data, error } = await query.select().single();
 
 	if (error) {
 		console.error(error);
