@@ -18,5 +18,6 @@ module.exports = {
 		],
 		"react/prop-types": 0,
 		"no-unused-vars": 1,
+		"no-mixed-spaces-and-tabs": 0,
 	},
 };
