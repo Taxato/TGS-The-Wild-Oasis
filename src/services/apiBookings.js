@@ -124,11 +124,14 @@ export async function deleteBooking(id) {
 	const { data, error } = await supabase
 		.from("bookings")
 		.delete()
-		.eq("id", id);
+		.eq("id", id)
+		.select()
+		.single();
 
 	if (error) {
 		console.error(error);
 		throw new Error("Booking could not be deleted");
 	}
+
 	return data;
 }
