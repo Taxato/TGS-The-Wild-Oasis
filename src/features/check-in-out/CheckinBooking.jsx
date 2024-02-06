@@ -31,7 +31,7 @@ export default function CheckinBooking() {
 	const { settings, isLoading: isLoadingSettings } = useSettings();
 
 	const moveBack = useMoveBack();
-	const { checkIn, isCheckingIn } = useCheckIn();
+	const { checkIn, isLoading: isCheckingIn } = useCheckIn();
 
 	useEffect(() => {
 		setConfirmPaid(booking?.isPaid ?? false);

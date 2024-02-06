@@ -25,8 +25,8 @@ const HeadingGroup = styled.div`
 
 function BookingDetail() {
 	const { booking, isLoading, error } = useBooking();
-	const { checkOut, isCheckingOut } = useCheckOut();
-	const { deleteBooking, isDeleting } = useDeleteBooking();
+	const { checkOut, isLoading: isCheckingOut } = useCheckOut();
+	const { deleteBooking, isLoading: isDeleting } = useDeleteBooking();
 	const moveBack = useMoveBack();
 	const navigate = useNavigate();
 

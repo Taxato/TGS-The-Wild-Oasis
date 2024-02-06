@@ -6,7 +6,7 @@ import { createUpdateCabin as createCabinApi } from "../../services/apiCabins";
 export function useCreateCabin() {
 	const queryClient = useQueryClient();
 
-	const { isLoading: isCreating, mutate: createCabin } = useMutation({
+	const { mutate: createCabin, isLoading } = useMutation({
 		mutationFn: data => createCabinApi(data),
 		onSuccess: () => {
 			toast.success("New cabin successfully created");
@@ -17,5 +17,5 @@ export function useCreateCabin() {
 		},
 	});
 
-	return { isCreating, createCabin };
+	return { createCabin, isLoading };
 }

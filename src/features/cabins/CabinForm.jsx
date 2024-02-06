@@ -24,8 +24,8 @@ export default function CabinForm({ cabinToUpdate = {}, onCloseModal }) {
 		defaultValues: isUpdateSession ? updateValues : {},
 	});
 
-	const { isCreating, createCabin } = useCreateCabin();
-	const { isUpdating, updateCabin } = useUpdateCabin();
+	const { createCabin, isLoading: isCreating } = useCreateCabin();
+	const { updateCabin, isLoading: isUpdating } = useUpdateCabin();
 	const isWorking = isCreating || isUpdating;
 
 	function onSubmit(data) {

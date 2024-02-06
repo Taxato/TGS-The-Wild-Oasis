@@ -16,6 +16,7 @@ import Settings from "./pages/Settings";
 import NewUsers from "./pages/Users";
 import AppLayout from "./ui/AppLayout";
 import ToasterProvider from "./ui/ToasterProvider";
+import ProtectedRoute from "./ui/ProtectedRoute";
 
 const queryClient = new QueryClient({
 	defaultOptions: {
@@ -34,7 +35,12 @@ export default function App() {
 			<GlobalStyles />
 			<BrowserRouter>
 				<Routes>
-					<Route element={<AppLayout />}>
+					<Route
+						element={
+							<ProtectedRoute>
+								<AppLayout />
+							</ProtectedRoute>
+						}>
 						<Route
 							index
 							element={<Navigate replace to="dashboard" />}

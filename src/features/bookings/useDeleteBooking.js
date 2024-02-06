@@ -7,7 +7,7 @@ export function useDeleteBooking() {
 	const navigate = useNavigate();
 	const queryClient = useQueryClient();
 
-	const { mutate: deleteBooking, isLoading: isDeleting } = useMutation({
+	const { mutate: deleteBooking, isLoading } = useMutation({
 		mutationFn: bookingId => deleteBookingApi(bookingId),
 
 		onSuccess: data => {
@@ -19,5 +19,5 @@ export function useDeleteBooking() {
 		onError: () => toast.error("Booking could not be deleted"),
 	});
 
-	return { deleteBooking, isDeleting };
+	return { deleteBooking, isLoading };
 }

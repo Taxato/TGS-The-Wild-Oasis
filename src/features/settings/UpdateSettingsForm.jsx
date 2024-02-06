@@ -17,7 +17,7 @@ function UpdateSettingsForm() {
 		} = {},
 	} = useSettings();
 
-	const { isUpdating, updateSetting } = useUpdateSetting();
+	const { updateSetting, isLoading: isUpdating } = useUpdateSetting();
 
 	if (isLoading) return <Spinner />;
 
