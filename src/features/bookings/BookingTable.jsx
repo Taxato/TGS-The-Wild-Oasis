@@ -1,11 +1,11 @@
-import Menus from "../../ui/Menus";
-import Table from "../../ui/Table";
-import BookingRow from "./BookingRow";
-import Empty from "./../../ui/Empty";
-import Spinner from "../../ui/Spinner";
-
 import { useBookings } from "./useBookings";
+
+import Menus from "../../ui/Menus";
+import Spinner from "../../ui/Spinner";
+import Table from "../../ui/Table";
+import Empty from "./../../ui/Empty";
 import Pagination from "./../../ui/Pagination";
+import BookingRow from "./BookingRow";
 
 export default function BookingTable() {
 	const { bookings, isLoading, error, count } = useBookings();
